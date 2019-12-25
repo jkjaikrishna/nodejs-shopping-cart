@@ -24,6 +24,9 @@
                 <label for= "price" >Price</label>
                 <input type= "number" name= "price" id= "price" required value= "<% if(editMode) { %><%= product.price %><% } %>"/>
             </div>
+            <% if(editMode) { %>
+                <input type= "hidden" name= "productId" value= "<%= product.id %>" />
+            <% } %>
             <button class="btn" type="submit"><% if(editMode) { %>Update Product <% } else { %>Add Product <% } %></button>
         </form>
     </main>

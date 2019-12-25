@@ -21,7 +21,7 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = ( req, res, next ) => {
     let { title, imageUrl, description, price } = req.body;
-    let product = new Product( title, imageUrl, description, price );
+    let product = new Product( null, title, imageUrl, description, price );
     product.save();
     res.redirect('/products');
 };
@@ -29,7 +29,6 @@ exports.postAddProduct = ( req, res, next ) => {
 exports.getEditProduct = (req, res, next) => {
     const productId = req.params.productId;
     const editMode = req.query.edit;
-    console.log(productId, editMode);
 
     if(!editMode) {
         res.redirect('/');
@@ -46,9 +45,24 @@ exports.getEditProduct = (req, res, next) => {
             product
         });
     });
-
-    exports.postEditProduct = ( req, res, next ) => {
-        console.log('In edipt project');
-    };
     
+};
+
+exports.postEditProduct = ( req, res, next ) => {
+    const { 
+        productId: updatedProductId, 
+        title: updatedTitle, 
+        imageUrl: updatedImageUrl, 
+        description: updatedDescription, 
+        price: updatedPrice
+    } = req.body;
+    const updatedProduct = new Product( updatedProductId, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice );
+    updatedProduct.save();
+    res.redirect('/admin/products');
+};
+
+exports.deleteProduct = ( req, res, next ) => {
+    const productId = req.body.productId;
+    Product.deleteById(productId);
+    res.redirect('/admin/products');
 };
